@@ -1,4 +1,4 @@
-﻿// COPYRIGHT 2009, 2010, 2011, 2012, 2013 by the Open Rails project.
+// COPYRIGHT 2009, 2010, 2011, 2012, 2013 by the Open Rails project.
 // 
 // This file is part of Open Rails.
 // 
@@ -16,6 +16,8 @@
 // along with Open Rails.  If not, see <http://www.gnu.org/licenses/>.
 
 // This file is the responsibility of the 3D & Environment Team. 
+
+#define DEBUG_THREAD_PERFORMANCE_STATSD
 
 using ORTS.Common;
 using System;
@@ -39,6 +41,11 @@ namespace Orts.Processes
 #if DEBUG_THREAD_PERFORMANCE
         StreamWriter DebugFileStream;
 #endif
+#if DEBUG_THREAD_PERFORMANCE_STATSD
+        System.Net.Sockets.UdpClient Statsd = new System.Net.Sockets.UdpClient("127.0.0.1", 2201);
+        byte[] StatsdCounter;
+        string StatsdTimer;
+#endif
 
         public Profiler(string name)
         {
@@ -52,6 +59,10 @@ namespace Orts.Processes
 #if DEBUG_THREAD_PERFORMANCE
             DebugFileStream = new StreamWriter(File.OpenWrite("debug_thread_" + name.ToLowerInvariant() + "_profiler.csv"));
             DebugFileStream.Write("Time,Event\n");
+#endif
+#if DEBUG_THREAD_PERFORMANCE_STATSD
+            StatsdCounter = System.Text.Encoding.ASCII.GetBytes("openrails.processes." + name + ":1|c");
+            StatsdTimer = "openrails.processes." + name;
 #endif
         }
 
@@ -89,6 +100,9 @@ namespace Orts.Processes
 #if DEBUG_THREAD_PERFORMANCE
             DebugFileStream.Write("{0},+\n", DateTime.Now.Ticks);
 #endif
+#if DEBUG_THREAD_PERFORMANCE_STATSD
+            Statsd.Send(StatsdCounter, StatsdCounter.Length);
+#endif
             TimeRunning.Start();
             if (ProcessThread != null)
                 LastCPU = ProcessThread.TotalProcessorTime;
@@ -122,6 +136,13 @@ namespace Orts.Processes
             Wall.Update(timeTotal / 1000, 100f * timeRunning / timeTotal);
             CPU.Update(timeTotal / 1000, 100f * timeCPU / timeTotal);
             Wait.Update(timeTotal / 1000, Math.Max(0, (timeRunning - timeCPU) / timeTotal));
+
+#if DEBUG_THREAD_PERFORMANCE_STATSD
+            var bytes = System.Text.Encoding.ASCII.GetBytes(StatsdTimer + ".wall:" + timeRunning + "|ms");
+            Statsd.Send(bytes, bytes.Length);
+            bytes = System.Text.Encoding.ASCII.GetBytes(StatsdTimer + ".cpu:" + timeCPU + "|ms");
+            Statsd.Send(bytes, bytes.Length);
+#endif
         }
     }
 }
