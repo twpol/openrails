@@ -129,8 +129,14 @@ REM Build locales.
 PUSHD Source\Locales && CALL Update.bat non-interactive && POPD || GOTO :error
 
 REM Run unit tests (9009 means XUnit itself wasn't found, which is an error).
+CALL :delete "xunit.xml" || GOTO :error
 xunit.console.x86 Program\Tests.dll /nunit xunit.xml
 IF "%ERRORLEVEL%" == "9009" GOTO :error
+CALL :file-size xunit.xml
+IF "%FileSize%" LEQ 100 (
+	>&2 ECHO ERROR: Test results file "xunit.xml" is %FileSize% bytes; expected more than 100 bytes.
+	GOTO :error
+)
 
 CALL :copy "Program\RunActivity.exe" "Program\RunActivityLAA.exe" || GOTO :error
 editbin /NOLOGO /LARGEADDRESSAWARE "Program\RunActivityLAA.exe" || GOTO :error
@@ -224,6 +230,11 @@ IF "%~$PATH:1" == "" (
 	>&2 ECHO WARNING: %~1 ^(%~2^) is not found in %%PATH%% - the build may fail.
 	SET /A CheckToolInPath.Missing=CheckToolInPath.Missing+1
 )
+GOTO :EOF
+
+REM Gets the size of a file.
+:file-size
+SET FileSize=%~z1
 GOTO :EOF
 
 REM Utility for creating a directories with logging.
