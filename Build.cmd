@@ -130,7 +130,8 @@ PUSHD Source\Locales && CALL Update.bat non-interactive && POPD || GOTO :error
 
 REM Run unit tests (9009 means XUnit itself wasn't found, which is an error).
 CALL :delete "xunit.xml" || GOTO :error
-CALL :find-tool xunit.console.clr4.x86 || GOTO :error
+CALL :find-tool "xunit.console.clr4.x86.exe" || GOTO :error
+ECHO %FindTool%
 DIR "%FindTool:.exe=.exe.config%"
 xunit.console.clr4.x86 Program\Tests.dll /nunit xunit.xml
 CALL :file-size xunit.xml
