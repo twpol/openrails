@@ -130,8 +130,8 @@ PUSHD Source\Locales && CALL Update.bat non-interactive && POPD || GOTO :error
 
 REM Run unit tests (9009 means XUnit itself wasn't found, which is an error).
 CALL :delete "xunit.xml" || GOTO :error
+where.exe xunit.console.clr4.x86
 xunit.console.clr4.x86 Program\Tests.dll /nunit xunit.xml
-IF "%ERRORLEVEL%" == "9009" GOTO :error
 CALL :file-size xunit.xml
 IF "%FileSize%" LEQ 100 (
 	>&2 ECHO ERROR: Test results file "xunit.xml" is %FileSize% bytes; expected more than 100 bytes.
