@@ -130,7 +130,8 @@ PUSHD Source\Locales && CALL Update.bat non-interactive && POPD || GOTO :error
 
 REM Run unit tests (9009 means XUnit itself wasn't found, which is an error).
 CALL :delete "xunit.xml" || GOTO :error
-where.exe xunit.console.clr4.x86
+CALL :find-tool xunit.console.clr4.x86 || GOTO :error
+DIR "%FindTool:.exe=.exe.config%"
 xunit.console.clr4.x86 Program\Tests.dll /nunit xunit.xml
 CALL :file-size xunit.xml
 IF "%FileSize%" LEQ 100 (
@@ -230,6 +231,11 @@ IF "%~$PATH:1" == "" (
 	>&2 ECHO WARNING: %~1 ^(%~2^) is not found in %%PATH%% - the build may fail.
 	SET /A CheckToolInPath.Missing=CheckToolInPath.Missing+1
 )
+GOTO :EOF
+
+REM Gets the location of a tool.
+:find-tool
+SET FindTool=%~$PATH:1
 GOTO :EOF
 
 REM Gets the size of a file.
