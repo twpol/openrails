@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'mcr.microsoft.com/windows/nanoserver:1909'
-            args '--platform windows'
+            args '--platform windows --isolation process'
         }
     }
 
