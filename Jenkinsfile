@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                sh 'Build.cmd unstable'
             }
         }
         stage('Test') {
