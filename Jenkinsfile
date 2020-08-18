@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'Build.cmd unstable'
+                bat 'Build.cmd unstable'
             }
         }
         stage('Test') {
