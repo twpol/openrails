@@ -11,7 +11,7 @@ pipeline {
     }
 
     environment {
-        PATH = "C:\\WINDOWS\\SYSTEM32"
+        PATH = "C:\\WINDOWS\\SYSTEM32;$PATH"
     }
 
     stages {
