@@ -1,23 +1,17 @@
 pipeline {
-    agent any
-    // agent {
-    //     docker {
-    //         image 'mcr.microsoft.com/windows/nanoserver:1909'
-    //     }
-    // }
+    agent {
+        docker {
+            image 'mcr.microsoft.com/windows/nanoserver:1909'
+        }
+    }
 
     triggers {
         pollSCM 'H/5 * * * *'
     }
 
-    environment {
-        PATH = "C:\\WINDOWS\\SYSTEM32;$PATH"
-    }
-
     stages {
         stage('Build') {
             steps {
-                bat 'SET'
                 bat 'Build.cmd unstable'
             }
         }
