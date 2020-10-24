@@ -1,7 +1,6 @@
 pipeline {
     agent {
-        docker {
-            dockerfile true
+        dockerfile {
             label 'docker && windows'
         }
     }
