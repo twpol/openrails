@@ -19,9 +19,11 @@ RUN choco source add --name=local --source=C:\packages
 # Install build dependencies
 RUN powershell Set-Service wuauserv -StartupType Manual
 RUN DISM /Online /NoRestart /Enable-Feature /FeatureName:NetFx3ServerFeatures
-RUN choco install --source=local --yes --no-progress git.install lazarus 7zip.portable xna31
+RUN choco install --source=local --yes --no-progress 7zip.portable
+RUN choco install --source=local --yes --no-progress git.install
+RUN choco install --source=local --yes --no-progress lazarus
+# RUN choco install --source=local --yes --no-progress xna31
 RUN powershell Set-Service wuauserv -StartupType Disabled
-RUN powershell (New-Object Net.WebClient).DownloadFile('https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x86.exe', 'tools/rcedit-x86.exe')
+RUN powershell (New-Object Net.WebClient).DownloadFile('https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x86.exe', """$env:ChocolateyInstall/bin/rcedit-x86.exe""")
 
-RUN DIR C:\packages
-RUN DIR C:\tools
+RUN DIR %ChocolateyInstall%\bin
