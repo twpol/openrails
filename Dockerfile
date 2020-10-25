@@ -24,7 +24,7 @@ RUN choco install --yes --no-progress visualstudio-installer
 RUN choco install --yes --no-progress visualstudio2019buildtools
 RUN choco install --yes --no-progress visualstudio2019-workload-manageddesktopbuildtools
 RUN choco install --yes --no-progress visualstudio2019-workload-vctools
-RUN choco install --yes --no-progress netfx-4.7-devpack
+RUN choco install --yes --no-progress netfx-4.7.2-devpack
 RUN powershell Set-Service wuauserv -StartupType Disabled
 ADD https://dist.nuget.org/win-x86-commandline/latest/nuget.exe C:/ProgramData/Chocolatey/bin/nuget.exe
 ADD https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x86.exe C:/ProgramData/Chocolatey/bin/rcedit-x86.exe
