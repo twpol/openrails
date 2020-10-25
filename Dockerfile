@@ -21,5 +21,6 @@ RUN powershell Set-Service wuauserv -StartupType Disabled
 RUN powershell (New-Object Net.WebClient).DownloadFile('https://dist.nuget.org/win-x86-commandline/latest/nuget.exe', """$env:ChocolateyInstall/bin/nuget.exe""")
 RUN powershell (New-Object Net.WebClient).DownloadFile('https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x86.exe', """$env:ChocolateyInstall/bin/rcedit-x86.exe""")
 
-RUN DIR package-versions
-RUN DIR %ChocolateyInstall%\bin
+# Set up links (because we can't dynamically set the path) and the global paths
+RUN powershell New-Item -ItemType SymbolicLink -Path C:\lazarus\fpc\current -Target (Get-ChildItem -Recurse C:\lazarus\fpc\strip.exe).DirectoryName
+RUN SETX PATH "%PATH%;C:\lazarus;C:\lazarus\fpc\current"
