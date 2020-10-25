@@ -25,9 +25,10 @@ RUN choco install --yes --no-progress visualstudio2019buildtools
 RUN choco install --yes --no-progress visualstudio2019-workload-manageddesktopbuildtools
 RUN choco install --yes --no-progress visualstudio2019-workload-vctools
 RUN powershell Set-Service wuauserv -StartupType Disabled
-ADD https://dist.nuget.org/win-x86-commandline/latest/nuget.exe $ChocolateyInstall/bin/nuget.exe
-ADD https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x86.exe $ChocolateyInstall/bin/rcedit-x86.exe
+ADD https://dist.nuget.org/win-x86-commandline/latest/nuget.exe C:/ProgramData/Chocolatey/bin/nuget.exe
+ADD https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x86.exe C:/ProgramData/Chocolatey/bin/rcedit-x86.exe
 
 # Set up links (because we can't dynamically set the path) for the global paths
-RUN powershell New-Item -ItemType SymbolicLink -Path "C:\lazarus\fpc\strip" -Target (Get-ChildItem -Recurse "C:\lazarus\fpc\strip.exe").DirectoryName
-RUN SETX PATH "%PATH%;C:\lazarus;C:\lazarus\fpc\strip"
+RUN powershell "New-Item -ItemType SymbolicLink -Path 'C:\lazarus\strip' -Target (Get-ChildItem -Recurse 'C:\lazarus\fpc\strip.exe').DirectoryName"
+RUN powershell "New-Item -ItemType SymbolicLink -Path 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\Current' -Target (Get-ChildItem -Directory 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC').FullName"
+RUN SETX PATH "%PATH%;C:\lazarus;C:\lazarus\strip;C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\amd64;C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\Current\bin\Hostx64\x64"
