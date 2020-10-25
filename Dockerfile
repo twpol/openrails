@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/windows/servercore:1909
 
+# Extra dummy file needed for XNA 3.1 to register correctly
+COPY msdmo.dll C:/WINDOWS/SysWOW64/msdmo.dll
+
 # Download the Chocolatey package version list here so that Docker can cache the installations
 ADD https://chocolatey.org/api/v2/package-versions/chocolatey/ package-versions/chocolatey.json
 ADD https://chocolatey.org/api/v2/package-versions/7zip.portable/ package-versions/7zip.portable.json
@@ -18,7 +21,7 @@ RUN DISM /Online /NoRestart /Enable-Feature /FeatureName:NetFx3ServerFeatures
 RUN choco install --yes --no-progress 7zip.portable
 RUN choco install --yes --no-progress git
 RUN choco install --yes --no-progress lazarus
-RUN choco install --yes --no-progress xna31 --install-arguments=ADDLOCAL=""
+RUN choco install --yes --no-progress xna31
 RUN choco install --yes --no-progress xunit
 RUN choco install --yes --no-progress visualstudio-installer
 RUN choco install --yes --no-progress visualstudio2019buildtools
