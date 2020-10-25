@@ -5,7 +5,6 @@ ADD https://chocolatey.org/api/v2/package-versions/7zip.portable/ package-versio
 ADD https://chocolatey.org/api/v2/package-versions/chocolatey/ package-versions/chocolatey.json
 ADD https://chocolatey.org/api/v2/package-versions/git/ package-versions/git.json
 ADD https://chocolatey.org/api/v2/package-versions/lazarus/ package-versions/lazarus.json
-ADD https://chocolatey.org/api/v2/package-versions/nuget/ package-versions/nuget.json
 ADD https://chocolatey.org/api/v2/package-versions/xna31/ package-versions/xna31.json
 
 # Install Chocolatey itself
@@ -17,9 +16,9 @@ RUN DISM /Online /NoRestart /Enable-Feature /FeatureName:NetFx3ServerFeatures
 RUN choco install --yes --no-progress 7zip.portable
 RUN choco install --yes --no-progress git
 RUN choco install --yes --no-progress lazarus
-RUN choco install --yes --no-progress nuget
 # RUN choco install --yes --no-progress xna31
 RUN powershell Set-Service wuauserv -StartupType Disabled
+RUN powershell (New-Object Net.WebClient).DownloadFile('https://dist.nuget.org/win-x86-commandline/latest/nuget.exe', """$env:ChocolateyInstall/bin/nuget.exe""")
 RUN powershell (New-Object Net.WebClient).DownloadFile('https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x86.exe', """$env:ChocolateyInstall/bin/rcedit-x86.exe""")
 
 RUN DIR package-versions
