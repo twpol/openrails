@@ -18,7 +18,7 @@ RUN DISM /Online /NoRestart /Enable-Feature /FeatureName:NetFx3ServerFeatures
 RUN choco install --yes --no-progress 7zip.portable
 RUN choco install --yes --no-progress git
 RUN choco install --yes --no-progress lazarus
-# RUN choco install --yes --no-progress xna31
+RUN choco install --yes --no-progress xna31 --install-arguments=ADDLOCAL=""
 RUN choco install --yes --no-progress xunit
 RUN choco install --yes --no-progress visualstudio-installer
 RUN choco install --yes --no-progress visualstudio2019buildtools
