@@ -1,4 +1,4 @@
-@ECHO OFF
+@ECHO ON
 SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 
 ECHO  ##############################################################################
