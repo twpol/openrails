@@ -1,6 +1,7 @@
 pipeline {
     agent {
         dockerfile {
+            dir 'Build'
             label 'docker && windows'
         }
     }
@@ -12,7 +13,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'Build.cmd unstable'
+                bat 'Build/Build.cmd unstable'
             }
         }
         stage('Test') {
