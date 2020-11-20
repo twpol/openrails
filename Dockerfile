@@ -5,8 +5,8 @@ COPY XNA31_NoSelfReg.mst C:/XNA31_NoSelfReg.mst
 
 # Install Chocolatey and build dependencies
 RUN powershell iex(iwr -useb https://chocolatey.org/install.ps1)
-RUN choco feature disable showDownloadProgress
-RUN choco feature enable allowGlobalConfirmation
+RUN choco feature disable --name=showDownloadProgress
+RUN choco feature enable --name=allowGlobalConfirmation
 RUN powershell Set-Service wuauserv -StartupType Manual && DISM /Online /NoRestart /Enable-Feature /FeatureName:NetFx3ServerFeatures && choco install DotNet3.5 --version=3.5.20160716 && powershell Set-Service wuauserv -StartupType Disabled
 RUN choco install git.portable --version=2.29.2.2
 RUN choco install visualstudio-installer --version=2.0.1
