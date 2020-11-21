@@ -110,8 +110,7 @@ REM Disable warning CS1591 "Missing XML comment for publicly visible type or mem
 MSBuild Source\ORTS.sln /t:Clean;Build /p:Configuration=Release /p:NoWarn=1591 || GOTO :error
 
 REM Build contributed Timetable Editor.
-PUSHD Source\Contrib\TimetableEditor && CALL Build.cmd && POPD || GOTO :error
-@ECHO ON
+@REM PUSHD Source\Contrib\TimetableEditor && CALL Build.cmd && POPD || GOTO :error
 
 REM Set update channel.
 >>Program\Updater.ini ECHO Channel=string:%Mode% || GOTO :error
