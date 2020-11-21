@@ -130,7 +130,7 @@ REM Set revision number.
 ECHO Set revision number to "%Revision%".
 
 REM Build locales.
-PUSHD Source\Locales && CALL Update.bat non-interactive && POPD || GOTO :error
+@REM PUSHD Source\Locales && CALL Update.bat non-interactive && POPD || GOTO :error
 
 REM Run unit tests (9009 means XUnit itself wasn't found, which is an error).
 xunit.console.x86 Program\Tests.dll /nunit xunit.xml
