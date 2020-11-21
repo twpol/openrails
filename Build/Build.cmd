@@ -111,6 +111,7 @@ MSBuild Source\ORTS.sln /t:Clean;Build /p:Configuration=Release /p:NoWarn=1591 |
 
 REM Build contributed Timetable Editor.
 PUSHD Source\Contrib\TimetableEditor && CALL Build.cmd && POPD || GOTO :error
+@ECHO ON
 
 REM Set update channel.
 >>Program\Updater.ini ECHO Channel=string:%Mode% || GOTO :error
