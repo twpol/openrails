@@ -163,9 +163,9 @@ FOR %%F IN ("Program\*.exe", "Program\Orts.*.dll", "Program\Contrib.*.dll", "Pro
 ECHO Set product and file version information to "%VersionInfoVersion%".
 
 REM *** Special build step: signs binaries ***
-IF NOT "%JENKINS_TOOLS%" == "" (
-	FOR /R "Program" %%F IN (*.exe *.dll) DO CALL "%JENKINS_TOOLS%\sign.cmd" "%%~F" || GOTO :error
-)
+@REM FIXME: IF NOT "%JENKINS_TOOLS%" == "" (
+@REM FIXME: FOR /R "Program" %%F IN (*.exe *.dll) DO CALL "%JENKINS_TOOLS%\sign.cmd" "%%~F" || GOTO :error
+@REM FIXME: )
 
 IF NOT "%Mode%" == "Unstable" (
 	REM Restart the Office Click2Run service as this frequently breaks builds.
