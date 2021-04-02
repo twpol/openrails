@@ -55,7 +55,7 @@ Each entry in this tree is a class accessible from its parent via the property i
   - `UserSettings` [`Settings`]
   - `Weather` [`Weather`]
 
-The new class `TractionSystem` will contain the following existing classes:
+The new class `TractionSystem` will provide access to the functionality of the following existing classes:
 
 - `DieselEngine` (collection) [`DieselEngines`] - _currently on `MSTSDieselLocomotive`_
 - `GearBox` [`GearBox`] - _currently on `MSTSDieselLocomotive` and `DieselEngine`_
@@ -63,6 +63,7 @@ The new class `TractionSystem` will contain the following existing classes:
 - `ScriptedElectricPowerSupply` [`PowerSupply`] - _currently on `MSTSElectricLocomotive`_
   - `ScriptedCircuitBreaker` [`CircuitBreaker`]
 - `ScriptedTrainControlSystem` [`TrainControlSystem`] - _currently on `MSTSLocomotive`_
+- _Something to do with steam power_
 
 ## Class hierarchy
 
