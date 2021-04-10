@@ -52,6 +52,7 @@ Each entry in this tree is a class accessible from its parent via the property i
       - `ParticleEmitterData` (collection) [`EffectData`] - _currently on `MSTSWagon`_
       - `TrainCarPart` (collection) [`Parts`]
     - `TrainController` [`TrainController`] - _currently does not exist_
+  - `TrainManager` [`TrainManager`] - _currently does not exist_
   - `UserSettings` [`Settings`]
   - `Weather` [`Weather`]
 
@@ -92,3 +93,8 @@ Each entry in this tree is a class which inherits from its parent. Those in _ita
 - `TrainController` (abstract) - _currently does not exist_
   - `AITrainController` - _currently does not exist, will provide train-level AI control_
   - `PerCarTrainController` - _currently does not exist, will delegate simulation to `TrainCarController`_
+- `TrainManager` (abstract) - _currently does not exist_
+  - `MSTSActivityTrainManager` - _currently does not exist, will provide train management for MSTS activities_
+  - `MSTSExploreTrainManager` - _currently does not exist, will provide train management for MSTS explore route_
+  - `MultiplayerTrainManager` - _currently does not exist, will provide train management for multiplayer_
+  - `TimetableTrainManager` - _currently does not exist, will provide train management for timetables_
