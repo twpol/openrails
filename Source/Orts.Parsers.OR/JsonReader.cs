@@ -1,4 +1,4 @@
-// COPYRIGHT 2018 by the Open Rails project.
+﻿// COPYRIGHT 2018 by the Open Rails project.
 //
 // This file is part of Open Rails.
 //
@@ -51,6 +51,7 @@ namespace Orts.Parsers.OR
         JsonTextReader _reader;
         StringBuilder _path;
         Stack<int> _pathPositions;
+        int _countWarnings;
 
         /// <summary>
         /// Contains a condensed account of the position of the current item in the JSO, such as when parsing "Clear" from a WeatherFile:
@@ -133,6 +134,13 @@ namespace Orts.Parsers.OR
                         break;
                 }
             }
+        }
+
+        public bool TryRead<T>(Func<JsonReader, T> read, out T output)
+        {
+            var warnings = _countWarnings;
+            output = read(this);
+            return warnings == _countWarnings;
         }
 
         public T AsEnum<T>(T defaultValue)
@@ -237,6 +245,7 @@ namespace Orts.Parsers.OR
         public void TraceWarning(string message)
         {
             Trace.TraceWarning("{2} in {0}:line {1}", _fileName, _reader.LineNumber, message);
+            _countWarnings++;
         }
 
         public void TraceInformation(string message)

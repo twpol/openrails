@@ -61,8 +61,8 @@ namespace Orts.Formats.OR
                     // Ignore these items. "[]" is found along the way to "[]."
                     break;
                 case "[].":
-                    var container = new Container(item);
-                    if (container.IsValid()) Containers.Add(container);
+                    if (item.TryRead(json => new Container(json), out var container))
+                        Containers.Add(container);
                     break;
                 default: return false;
             }
@@ -119,12 +119,6 @@ namespace Orts.Formats.OR
                 default: return false;
             }
             return true;
-        }
-
-        public virtual bool IsValid()
-        {
-            // Typically these will be the opposite conditions of the constructor
-            return Id >= 0 && Name.Length > 1 && !string.IsNullOrWhiteSpace(Name) && !Name.Contains(" ") && Type != ContainerType.MissingType && Location != Vector3.Zero;
         }
     }
 }
