@@ -1,4 +1,4 @@
-﻿// COPYRIGHT 2018 by the Open Rails project.
+// COPYRIGHT 2018 by the Open Rails project.
 //
 // This file is part of Open Rails.
 //
@@ -225,9 +225,11 @@ namespace Orts.Parsers.OR
                         vector3.Y = AsFloat(0f);
                     if (_reader.Read())
                         vector3.Z = AsFloat(0f);
+                    if (!_reader.Read() || _reader.TokenType != JsonToken.EndArray)
+                        goto default; // We did not have exactly 3 items in the array
                     return vector3;
                 default:
-                    TraceWarning($"Expected [ in {Path}; got {_reader.TokenType}");
+                    TraceWarning($"Expected Vector3 (3 item array) in {Path}; got {_reader.TokenType}");
                     return defaultValue;
             }
         }
