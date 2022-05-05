@@ -18,13 +18,14 @@
 // Use this define to diagnose issues in the JSON reader below.
 //#define DEBUG_JSON_READER
 
+using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace Orts.Parsers.OR
 {
@@ -71,6 +72,11 @@ namespace Orts.Parsers.OR
             _pathPositions = new Stack<int>();
         }
 
+        /// <summary>
+        /// Reads next token and stores in _reader.TokenType, _reader.ValueType, _reader.Value
+        /// Throws exception if value not as expected.
+        /// </summary>
+        /// <param name="tryParse"></param>
         public void ReadBlock(Func<JsonReader, bool> tryParse)
         {
             var basePosition = _pathPositions.Count > 0 ? _pathPositions.Peek() : 0;
@@ -114,6 +120,7 @@ namespace Orts.Parsers.OR
                 switch (_reader.TokenType)
                 {
                     case JsonToken.StartObject:
+                    case JsonToken.StartArray:
                     case JsonToken.Boolean:
                     case JsonToken.Bytes:
                     case JsonToken.Date:
@@ -168,6 +175,18 @@ namespace Orts.Parsers.OR
             }
         }
 
+        public bool AsBoolean(bool defaultValue)
+        {
+            switch (_reader.TokenType)
+            {
+                case JsonToken.Boolean:
+                    return (bool)_reader.Value;
+                default:
+                    TraceWarning($"Expected Boolean value in {Path}; got {_reader.TokenType}");
+                    return defaultValue;
+            }
+        }
+
         public string AsString(string defaultValue)
         {
             switch (_reader.TokenType)
@@ -190,6 +209,25 @@ namespace Orts.Parsers.OR
                     return (float)StartTime.TotalSeconds;
                 default:
                     TraceWarning($"Expected string (time) value in {Path}; got {_reader.TokenType}");
+                    return defaultValue;
+            }
+        }
+
+        public Vector3 AsVector3(Vector3 defaultValue)
+        {
+            var vector3 = defaultValue;
+            switch (_reader.TokenType)
+            {
+                case JsonToken.StartArray:
+                    if (_reader.Read())
+                        vector3.X = AsFloat(0f);
+                    if (_reader.Read())
+                        vector3.Y = AsFloat(0f);
+                    if (_reader.Read())
+                        vector3.Z = AsFloat(0f);
+                    return vector3;
+                default:
+                    TraceWarning($"Expected [ in {Path}; got {_reader.TokenType}");
                     return defaultValue;
             }
         }

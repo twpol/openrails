@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "",
+    "type": "closed",
+    "flipped": false,
+    "location": [
+      1.234,
+      2.345,
+      3.456
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Container_2",
+    "type": "open",
+    "flipped": true,
+    "location": [
+      1.234,
+      2.345,
+      3.456
+    ]
+  }
+]

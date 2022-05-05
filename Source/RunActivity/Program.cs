@@ -28,6 +28,9 @@ using Orts.Viewer3D.Processes;
 using ORTS.Common;
 using ORTS.Settings;
 
+using Orts.Formats.OR;
+using System.Collections.Generic;
+
 namespace Orts
 {
     static class NativeMethods
@@ -60,6 +63,10 @@ namespace Orts
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Native");
             path = Path.Combine(path, (Environment.Is64BitProcess) ? "X64" : "X86");
             NativeMethods.SetDllDirectory(path);
+
+
+
+            new ContainersFile("a.containers-or");
 
             var game = new Game(settings);
             game.PushState(new GameStateRunActivity(args));

@@ -59,6 +59,7 @@
     <Compile Include="AEStationPath.cs" />
     <Compile Include="AETraveller.cs" />
     <Compile Include="AuxActionRef.cs" />
+    <Compile Include="ContainersFile.cs" />
     <Compile Include="DrawUtility.cs" />
     <Compile Include="ExtCarSpawnerFile.cs" />
     <Compile Include="GlobalItem.cs" />
@@ -97,6 +98,9 @@
       <Project>{1cc3bd5c-06c5-4784-b067-f93945a7ca2c}</Project>
       <Name>Orts.Parsers.OR</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
