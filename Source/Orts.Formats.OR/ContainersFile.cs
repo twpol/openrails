@@ -36,36 +36,15 @@ namespace Orts.Formats.OR
         /// <summary>
         /// Contains list of valid containers
         /// </summary>
-        public List<Container> ContainerList = new List<Container>();
-        public string Filename;
-
-        private Container Container = null;
-        private List<Container> UncheckedContainerList = new List<Container>();
+        public List<Container> Containers = new List<Container>();
 
         /// <summary>
         /// Reads JSON file, parsing valid data into containerShapeList and logging errors.
         /// </summary>
         /// <param name="filename"></param>
-        /// <param name="containerShapeList"></param>
-        /// <param name="shapePath"></param>
         public ContainersFile(string filename)
         {
-            Filename = filename; // Saved for use in error messages
-
             JsonReader.ReadFile(filename, TryParse);
-
-            // Filter out objects with properties that are either invalid or missing.
-            ContainerList = UncheckedContainerList
-                // Checks for invalid names
-                .Where(r => !string.IsNullOrEmpty(r.Name))
-                .Where(r => !r.Name.Contains(" "))
-
-                // Checks for missing fields
-                .Where(r => r.Id != MissingField.MissingId)
-                .Where(r => r.Name != MissingField.MissingName)
-                .Where(r => r.Type != ContainerType.MissingType)
-                .Where(r => r.Location != MissingField.MissingVector3)
-                .ToList();
         }
 
         /// <summary>
@@ -81,41 +60,11 @@ namespace Orts.Formats.OR
                 case "[]":
                     // Ignore these items. "[]" is found along the way to "[]."
                     break;
-
                 case "[].":
-                    Container = new Container();
-                    UncheckedContainerList.Add(Container);
+                    var container = new Container(item);
+                    if (container.IsValid()) Containers.Add(container);
                     break;
-
-                case "[].id":
-                    Container.Id = item.AsInteger(-1);
-                    break;
-
-                case "[].name":
-                    // Parse the property with default value as invalid, so errors can be detected and the object rejected later.
-                    Container.Name = item.AsString("");
-
-                    // Include any warning for invalid names here. For example:
-                    if (string.IsNullOrWhiteSpace(Container.Name)
-                    || Container.Name.Contains(" "))
-                        Trace.TraceWarning($"Invalid name \"{Container.Name}\" referenced in {Filename}");
-                    break;
-
-                case "[].type":
-                    Container.Type = item.AsEnum(ContainerType.Closed);
-                    break;
-
-                case "[].flipped":
-                    Container.Flipped = item.AsBoolean(false);
-                    break;
-
-                case "[].location[]":
-                    Container.Location = item.AsVector3(new Vector3(0, 0, 0));
-                    break;
-
-                default:
-                    Trace.TraceWarning($"Unexpected entry \"{item.Path}\" found"); 
-                    return false;
+                default: return false;
             }
             return true;
         }
@@ -131,37 +80,51 @@ namespace Orts.Formats.OR
         Closed
     }
 
-    public static class MissingField
-    {
-        public static string MissingName = "name missing>";
-        public static Vector3 MissingVector3 = new Vector3(float.NaN, float.NaN, float.NaN);
-        public static int MissingId = -1;
-    }
-
     public class Container
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))] // Provides automatic conversion parsing a string into an enum
-        public ContainerType? Type { get; set; }
-
-        public bool Flipped { get; set; }
-        public Vector3 Location { get; set; }
+        public int Id = -1;
+        public string Name = "";
+        public ContainerType Type = ContainerType.MissingType;
+        public bool Flipped;
+        public Vector3 Location;
 
         /// <summary>
         /// Give properties to a new Container which can be tested for missing entries
         /// </summary>
-        public Container()
+        public Container(JsonReader json)
         {
-            // Required properties get identifiable values
-            Id = MissingField.MissingId;
-            Name = MissingField.MissingName;
-            Type = ContainerType.MissingType;
-            Location = MissingField.MissingVector3;
+            json.ReadBlock(TryParse);
 
-            // Default properties
-            Flipped = false;
+            // These warnings apply to the entire object and will be reported on the "}"
+            if (Id < 0) json.TraceWarning($"Skipped container missing property ID");
+            if (Name.Length == 0) json.TraceWarning($"Skipped container missing property Name");
+            if (Type == ContainerType.MissingType) json.TraceWarning($"Skipped container missing property Type");
+            if (Location == Vector3.Zero) json.TraceWarning($"Skipped container missing property Location");
+        }
+
+        protected virtual bool TryParse(JsonReader item)
+        {
+            switch (item.Path)
+            {
+                case "id": Id = item.AsInteger(Id); break;
+                case "name":
+                    Name = item.AsString(Name);
+                    // Include any warning for invalid names here. For example:
+                    if (string.IsNullOrWhiteSpace(Name) || Name.Contains(" "))
+                        item.TraceWarning($"Skipped container with invalid name \"{Name}\"");
+                    break;
+                case "type": Type = item.AsEnum(Type); break;
+                case "flipped": Flipped = item.AsBoolean(Flipped); break;
+                case "location[]": Location = item.AsVector3(Location); break;
+                default: return false;
+            }
+            return true;
+        }
+
+        public virtual bool IsValid()
+        {
+            // Typically these will be the opposite conditions of the constructor
+            return Id >= 0 && Name.Length > 1 && !string.IsNullOrWhiteSpace(Name) && !Name.Contains(" ") && Type != ContainerType.MissingType && Location != Vector3.Zero;
         }
     }
 }
