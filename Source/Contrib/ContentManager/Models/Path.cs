@@ -1,4 +1,4 @@
-﻿// COPYRIGHT 2014 by the Open Rails project.
+// COPYRIGHT 2014 by the Open Rails project.
 // 
 // This file is part of Open Rails.
 // 
@@ -56,7 +56,7 @@ namespace ORTS.ContentManager.Models
                     if ((node.pathFlags & 0x10) != 0) flags |= Flags.Optional;
                     var waitTime = (int)((node.pathFlags >> 16) & 0xFFFF);
                     var next = new List<Node>();
-                    nodes.Add(new Node(location, flags, waitTime, next));
+                    nodes.Add(new Node(location, flags, (int)pdp.Type, (int)pdp.Flags, waitTime, next));
                     nodeNexts.Add(next);
                 }
                 for (var i = 0; i < file.TrPathNodes.Count; i++)
@@ -86,13 +86,17 @@ namespace ORTS.ContentManager.Models
         {
             public readonly string Location;
             public readonly Flags Flags;
+            public readonly int PDPFlags1;
+            public readonly int PDPFlags2;
             public readonly int WaitTime;
             public readonly IEnumerable<Node> Next;
 
-            internal Node(string location, Flags flags, int waitTime, IEnumerable<Node> next)
+            internal Node(string location, Flags flags, int pdpFlags1, int pdpFlags2, int waitTime, IEnumerable<Node> next)
             {
                 Location = location;
                 Flags = flags;
+                PDPFlags1 = pdpFlags1;
+                PDPFlags2 = pdpFlags2;
                 WaitTime = waitTime;
                 Next = next;
             }

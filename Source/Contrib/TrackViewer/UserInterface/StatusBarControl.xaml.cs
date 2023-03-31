@@ -1,4 +1,4 @@
-﻿// COPYRIGHT 2014, 2015 by the Open Rails project.
+// COPYRIGHT 2014, 2015 by the Open Rails project.
 // 
 // This file is part of Open Rails.
 // 
@@ -290,7 +290,7 @@ namespace ORTS.TrackViewer.UserInterface
                 statusAdditional.Text += string.Format(System.Globalization.CultureInfo.CurrentCulture,
                     " {7}: {3}, {4} [{1} {2}] [{5} {6}] <{0}>",
                     curNode.pathFlags, (int)curNode.nextMainNode, (int)curNode.nextSidingNode,
-                    curPDP.X, curPDP.Z, curPDP.junctionFlag, curPDP.invalidFlag, trackViewer.DrawPATfile.FileName);
+                    curPDP.X, curPDP.Z, curPDP.Type, curPDP.Flags, trackViewer.DrawPATfile.FileName);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿// COPYRIGHT 2014, 2015 by the Open Rails project.
+// COPYRIGHT 2014, 2015 by the Open Rails project.
 // 
 // This file is part of Open Rails.
 // 
@@ -139,9 +139,9 @@ namespace ORTS.ContentManager
                         for (var i = 0; i < tracks.Count; i++)
                             line.Append(i == activeTrack ? " |" : " .");
                         if ((node.Flags & Path.Flags.Wait) != 0)
-                            line.AppendFormat("\t{1}\t{2} (wait for {3} seconds){0}", Environment.NewLine, node.Location, node.Flags, node.WaitTime);
+                            line.AppendFormat("\t{1}\t{2}/{4:X}/{5:X} (wait for {3} seconds){0}", Environment.NewLine, node.Location, node.Flags, node.WaitTime, node.PDPFlags1, node.PDPFlags2);
                         else
-                            line.AppendFormat("\t{1}\t{2}{0}", Environment.NewLine, node.Location, node.Flags);
+                            line.AppendFormat("\t{1}\t{2}/{4:X}/{5:X}{0}", Environment.NewLine, node.Location, node.Flags, 0, node.PDPFlags1, node.PDPFlags2);
                         if (node.Next.Count() == 0)
                         {
                             line.Append(" ");
