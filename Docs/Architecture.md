@@ -45,6 +45,24 @@ The namespaces used within code files should match the directory structure like 
 | `Orts.Component\Section\File.cs` | `Orts.Component.Section` |
 | `Orts.Component\Section\Subsection\File.cs` | `Orts.Component.Section.Subsection` |
 
+## Project/assembly relationships
+
+```mermaid
+flowchart LR
+  Sim[Orts.Simulation]
+  V2D[Orts.Viewing2D]
+  V3D[Orts.Viewing3D]
+  MP[Orts.MultiPlayer]
+  F[Orts.Formats]
+  P[Orts.Parsers]
+  IO[Orts.IO]
+  
+  V2D & V3D & Sim & MP
+  MP --> Sim
+  V2D & V3D --> Sim
+  V2D & V3D & Sim --> F --> P --> IO
+```
+
 ## Simulator object relationships
 
 This tree is a summary of the important object relationships (aggregation) inside the simulation. Each entry is a class whose instances can be accessed from the parent item.
