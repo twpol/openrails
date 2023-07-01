@@ -2024,7 +2024,6 @@ namespace Orts.Simulation.Physics
                         NumOfCouplerBreaks++;
                         DbfEvalValueChanged = true;//Debrief eval
 
-                        Trace.WriteLine(String.Format("Num of coupler breaks: {0}", NumOfCouplerBreaks));
                         numOfCouplerBreaksNoted = true;
 
                         if (Simulator.BreakCouplers)

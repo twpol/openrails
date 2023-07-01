@@ -114,11 +114,9 @@ namespace Orts.Simulation.Timetables
             filenames = GetFilenames(arguments[0]);
 
             // get file contents as strings
-            Trace.Write("\n");
             foreach (string filePath in filenames)
             {
                 // get contents as strings
-                Trace.Write("TT File : " + filePath + "\n");
                 var fileContents = new TimetableReader(filePath);
 
 #if DEBUG_TIMETABLE
@@ -131,11 +129,7 @@ namespace Orts.Simulation.Timetables
 
             // read and pre-process routes
 
-            Trace.Write(" TTROUTES:" + Paths.Count.ToString() + " ");
-
             loadPathNoFailure = PreProcessRoutes(cancellation);
-
-            Trace.Write(" TTTRAINS:" + trainInfoList.Count.ToString() + " ");
 
             // get startinfo for player train
             playerTrain = GetPlayerTrain(ref trainInfoList, arguments);

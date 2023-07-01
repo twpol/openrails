@@ -530,7 +530,6 @@ namespace Orts.Viewer3D
             if (viewer.TRP == null)
             {
                 // First to need a track profile creates it
-                Trace.Write(" TRP");
                 // Creates profile and loads materials into SceneryMaterials
                 TRPFile.CreateTrackProfile(viewer, viewer.Simulator.RoutePath, out viewer.TRP);
             }

@@ -61,11 +61,9 @@ namespace Orts.Simulation.Timetables
             filenames = GetFilenames(arguments[0]);
 
             // get file contents as strings
-            Trace.Write("\n");
             foreach (string filePath in filenames)
             {
                 // get contents as strings
-                Trace.Write("Pool File : " + filePath + "\n");
                 var poolInfo = new TimetableReader(filePath);
 
                 // read lines from input until 'Name' definition is found

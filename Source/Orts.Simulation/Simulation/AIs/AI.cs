@@ -335,8 +335,6 @@ namespace Orts.Simulation.AIs
             float firstAITime = StartList.GetNextTime();
             if (firstAITime > 0 && firstAITime < Simulator.ClockTime)
             {
-                Trace.Write("\n Run AI : " + StartList.Count.ToString() + " ");
-
                 // perform update for AI trains upto actual start time
 
                 clockTime = firstAITime - 1.0f;
@@ -345,9 +343,6 @@ namespace Orts.Simulation.AIs
 
                 for (double runTime = firstAITime; runTime < Simulator.ClockTime; runTime += 5.0) // update with 5 secs interval
                 {
-                    int fullsec = Convert.ToInt32(runTime);
-                    if (fullsec % 3600 == 0) Trace.Write(" " + (fullsec / 3600).ToString("00") + ":00 ");
-
                     AIUpdate((float)(runTime - clockTime), Simulator.PreUpdate);
                     Simulator.Signals.Update(true);
                     clockTime = runTime;
@@ -365,8 +360,6 @@ namespace Orts.Simulation.AIs
             float firstAITime = StartList.GetNextTime();
             if (firstAITime > 0 && firstAITime < Simulator.ClockTime)
             {
-                Trace.Write("\n Run AI : " + StartList.Count.ToString() + " ");
-
                 // perform update for AI trains upto actual start time
 
                 clockTime = firstAITime - 1.0f;
@@ -377,9 +370,6 @@ namespace Orts.Simulation.AIs
                 {
                     var loaderSpan = (float)TimetableInfo.PlayerTrainOriginalStartTime - firstAITime;
                     Simulator.TimetableLoadedFraction = ((float)runTime - firstAITime) / loaderSpan;
-
-                    int fullsec = Convert.ToInt32(runTime);
-                    if (fullsec % 3600 < 5) Trace.Write(" " + (fullsec / 3600).ToString("00") + ":00 ");
 
                     endPreRun = AITTUpdate((float)(runTime - clockTime), Simulator.PreUpdate, ref activeTrains);
 
@@ -551,9 +541,6 @@ namespace Orts.Simulation.AIs
                         if (cancellation.IsCancellationRequested) // ping loader watchdog
                             return;
 
-                        int fullsec = Convert.ToInt32(runTime);
-                        if (fullsec % 3600 == 0) Trace.Write(" " + (fullsec / 3600).ToString("00") + ":00 ");
-
                         if (runTime >= 24 * 3600) // end of day reached
                         {
                             if (playerTrainOriginalTrain > 0)
@@ -627,7 +614,6 @@ namespace Orts.Simulation.AIs
                 clockTime = Simulator.ClockTime = playerTTTrain.StartTime.Value;
             }
 
-            Trace.Write("\n");
             Simulator.PreUpdate = false;
         }
 
