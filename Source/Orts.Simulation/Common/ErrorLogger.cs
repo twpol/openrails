@@ -91,7 +91,7 @@ namespace Orts.Common
         public readonly TextWriter Writer;
         public readonly bool OnlyErrors;
         public readonly int[] Counts = new int[5];
-        bool LastWrittenFormatted;
+        int LinesNeeded;
 
         public ORTraceListener(TextWriter writer)
             : this(writer, false)
@@ -134,11 +134,7 @@ namespace Orts.Common
                 return;
 
             var output = new StringBuilder();
-            if (!LastWrittenFormatted)
-            {
-                output.AppendLine();
-                output.AppendLine();
-            }
+            while (LinesNeeded-- > 0) output.AppendLine();
             output.Append(eventType);
             output.Append(": ");
             if (args.Length == 0)
@@ -171,7 +167,7 @@ namespace Orts.Common
 
             output.AppendLine();
             Writer.Write(output);
-            LastWrittenFormatted = true;
+            LinesNeeded = 0;
         }
 
         public override void Write(string message)
@@ -179,7 +175,7 @@ namespace Orts.Common
             if (!OnlyErrors)
             {
                 Writer.Write(message);
-                LastWrittenFormatted = false;
+                LinesNeeded = 2;
             }
         }
 
@@ -188,7 +184,7 @@ namespace Orts.Common
             if (!OnlyErrors)
             {
                 Writer.WriteLine(message);
-                LastWrittenFormatted = false;
+                LinesNeeded = 1;
             }
         }
 
@@ -206,7 +202,6 @@ namespace Orts.Common
             else if (!OnlyErrors)
             {
                 base.WriteLine(o);
-                LastWrittenFormatted = false;
             }
         }
 
