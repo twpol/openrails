@@ -1487,7 +1487,7 @@ namespace Orts.Simulation.RollingStocks
                 case "wagon(ortspowersupplyairconditioningyield":
                     if (this is MSTSLocomotive)
                     {
-                        Trace.TraceWarning($"Defining the {lowercasetoken} parameter is forbidden for locomotives (in {stf.FileName}:line {stf.LineNumber})");
+                        STFException.TraceWarning(stf, $"Defining the {lowercasetoken} parameter is forbidden for locomotives");
                     }
                     else if (PassengerCarPowerSupply == null)
                     {
