@@ -12,11 +12,12 @@ jobs:
   release-pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Create pull request
-        uses: rematocorp/open-pull-request-action@v1
+      - uses: actions/github-script@v8
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          from-branch: ${{ github.event.ref }}
-          to-branch: master
-          repository-owner: twpol
-          repository: openrails
+          script: |
+            github.rest.pulls.create({
+              owner: 'twpol',
+              repo: 'openrails',
+              head: ${{ github.event.ref }},
+              base: 'master',
+            });
