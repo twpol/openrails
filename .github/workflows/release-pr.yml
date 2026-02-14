@@ -21,7 +21,7 @@ jobs:
       - name: Git Merge
         run: |
           git fetch origin "${{ github.event.ref }}"
-          git merge --no-commit "${{ github.event.ref }}"
+          git merge --no-commit FETCH_HEAD
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
