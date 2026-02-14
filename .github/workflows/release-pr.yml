@@ -6,7 +6,6 @@ on:
       - "release/*"
 
 permissions:
-  contents: write
   pull-requests: write
 
 jobs:
@@ -16,7 +15,7 @@ jobs:
       - name: Create pull request
         uses: rematocorp/open-pull-request-action@v1
         with:
-          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           from-branch: ${{ github.event.ref }}
           to-branch: master
           # repository-owner: change_this
