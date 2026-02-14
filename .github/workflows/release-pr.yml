@@ -16,15 +16,14 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const existing = await github.rest.pulls.list({
+            const pulls = await github.rest.pulls.list({
               owner: 'twpol',
               repo: 'openrails',
               head: '${{ github.event.ref }}',
               base: 'master',
               state: 'open',
             });
-            console.log(existing)
-            if (existing.length === 0) {
+            if (pulls.data.length === 0) {
               await github.rest.pulls.create({
                 owner: 'twpol',
                 repo: 'openrails',
