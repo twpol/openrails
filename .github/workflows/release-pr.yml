@@ -12,7 +12,8 @@ jobs:
   release-pr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v8
+      - name: Create pull request
+        uses: actions/github-script@v8
         with:
           script: |
             const existing = await github.rest.pulls.list({
