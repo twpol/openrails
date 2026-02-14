@@ -30,6 +30,6 @@ jobs:
                 repo,
                 head,
                 base,
-                title: 'Merge ' + head + ' to master',
+                title: 'Merge ' + head + ' to ' + base,
               })
             }
