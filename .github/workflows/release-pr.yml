@@ -5,9 +5,6 @@ on:
     branches:
       - "release/*"
 
-# permissions:
-#   pull-requests: write
-
 jobs:
   release-pr:
     runs-on: ubuntu-latest
@@ -16,20 +13,23 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const ref = '${{ github.event.ref }}'.replace('refs/heads/', '')
+            const owner = '${{ github.event.repository.owner.login }}'
+            const repo = '${{ github.event.repository.name }}'
+            const head = '${{ github.event.ref }}'.replace('refs/heads/', '')
+            const base = 'master'
             const pulls = await github.rest.pulls.list({
-              owner: 'twpol',
-              repo: 'openrails',
-              head: ref,
-              base: 'master',
+              owner,
+              repo,
+              head,
+              base,
               state: 'open',
-            });
+            })
             if (pulls.data.length === 0) {
               await github.rest.pulls.create({
-                owner: 'twpol',
-                repo: 'openrails',
-                head: ref,
-                base: 'master',
-                title: 'Merge ' + ref + ' to master',
-              });
+                owner,
+                repo,
+                head,
+                base,
+                title: 'Merge ' + head + ' to master',
+              })
             }
