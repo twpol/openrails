@@ -18,6 +18,6 @@ jobs:
             github.rest.pulls.create({
               owner: 'twpol',
               repo: 'openrails',
-              head: ${{ github.event.ref }},
+              head: '${{ github.event.ref }}',
               base: 'master',
             });
