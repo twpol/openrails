@@ -18,5 +18,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           from-branch: ${{ github.event.ref }}
           to-branch: master
-          # repository-owner: change_this
-          # repository: change_this
+          repository-owner: twpol
+          repository: openrails
