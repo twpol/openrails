@@ -13,16 +13,11 @@ jobs:
   release-pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - name: Create pull request
+        uses: rematocorp/open-pull-request-action@v1
         with:
-          fetch-depth: 0
-          ref: master
-
-      - name: Git Merge
-        run: |
-          git fetch origin "${{ github.event.ref }}"
-          git merge --no-commit FETCH_HEAD
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          from-branch: ${{ github.event.ref }}
+          to-branch: master
+          # repository-owner: change_this
+          # repository: change_this
