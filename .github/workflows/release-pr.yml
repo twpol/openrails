@@ -13,7 +13,8 @@ jobs:
   release-pr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
