@@ -15,9 +15,19 @@ jobs:
       - uses: actions/github-script@v8
         with:
           script: |
-            github.rest.pulls.create({
+            const existing = github.rest.pulls.list({
               owner: 'twpol',
               repo: 'openrails',
               head: '${{ github.event.ref }}',
               base: 'master',
+              state: 'open',
             });
+            console.log(existing)
+            if (existing.length === 0) {
+              github.rest.pulls.create({
+                owner: 'twpol',
+                repo: 'openrails',
+                head: '${{ github.event.ref }}',
+                base: 'master',
+              });
+            }
